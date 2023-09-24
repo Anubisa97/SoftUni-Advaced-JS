@@ -1,31 +1,21 @@
 function townsToJSON(input) {
+  const [, ...items] = input
   let result = [];
-  let res = {};
-  let pattern = /\b[\w\d.\s]+\b/g;
+  let pattern = /\s?\|\s?/;
 
-  for (const line of input) {
-    let [town, lat, long] = line.match(pattern);
+  for (const line of items) {
+    let [, town, latitude, longitude] = line.split(pattern);
 
-    if (!res.hasOwnProperty("Town")) {
-      res[town] = "";
-      res[lat] = "";
-      res[long] = "";
-    } else {
-      lat = Number(lat).toFixed(2);
-      lat = Number(lat);
-      long = Number(long).toFixed(2);
-      long = Number(long);
+    const obj = {
+      Town: town,
+      Latitude: roundNumber(latitude),
+      Longitude: roundNumber(longitude),
+    };
+    result.push(obj);
+  }
 
-      res.Town = town;
-      res.Latitude = lat;
-      res.Longitude = long;
-
-      result.push(JSON.parse(JSON.stringify(res)));
-
-      res.Town = "";
-      res.Latitude = "";
-      res.Longitude = "";
-    }
+  function roundNumber(num) {
+    return Math.round(Number(num) * 100) / 100;
   }
 
   console.log(JSON.stringify(result));
