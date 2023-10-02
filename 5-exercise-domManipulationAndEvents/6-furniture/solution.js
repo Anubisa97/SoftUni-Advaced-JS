@@ -26,9 +26,30 @@ function solve() {
   }
 
   function buyHandler(e) {
-    
+    const checkboxes = Array.from(document.querySelectorAll("input"));
+    let boughtItems = []
+    for (const item of checkboxes) {
+      if (item.checked) {
+        boughtItems.push(item)
+      }
+    }
+
+    let furnitureNames = []
+    let totalPrice = 0
+    let totalDecFactor = 0
+    let avgDecFactor = 0
+
+    for (const item of boughtItems) {
+      let itemInfo = Array.from(item.parentElement.parentElement.children)
+      furnitureNames.push(itemInfo[1].textContent)
+      totalPrice += Number(itemInfo[2].textContent)
+      totalDecFactor += Number(itemInfo[3].textContent)
+    }
+    avgDecFactor = totalDecFactor / boughtItems.length
+
+    output.value += `Bought furniture: ${furnitureNames.join(", ")}\n`
+    output.value += `Total price: ${totalPrice.toFixed(2)}\n`
+    output.value += `Average decoration factor: ${avgDecFactor}`
+
   }
-
-
-
 }
