@@ -1,0 +1,1 @@
+function breakfastRobot(params) {}
