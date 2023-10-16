@@ -9,8 +9,8 @@ function validate() {
   const companyInfoField = document.getElementById("companyInfo");
   const companyNumRef = document.getElementById("companyNumber");
 
-  companyNumRef.addEventListener("change", isCompanyCheck);
   submitButton.addEventListener("click", submitHandler);
+  isCompanyRef.addEventListener("change", isCompanyCheck);
 
   function submitHandler(ev) {
     ev.preventDefault();
@@ -23,21 +23,22 @@ function validate() {
 
     checkValidity(
       checkUsername(usernameRef),
-      console.log(checkUsername(usernameRef)),
       checkPasswords(passwordRef),
-      console.log(checkPasswords(passwordRef)),
       checkPasswords(confirmPasswordRef),
-      console.log(checkPasswords(confirmPasswordRef)),
       checkIfPasswordsMatch(passwordRef, confirmPasswordRef),
-      console.log(checkIfPasswordsMatch(passwordRef, confirmPasswordRef)),
-      checkEmail(emailRef),
-      console.log(checkEmail(emailRef))
+      checkEmail(emailRef)
     );
+
+    if (isCompanyRef.checked === true) {
+      if (!checkNumber(companyNumRef)) {
+        validDivRef.style.display = "none";
+      }
+    }
   }
 
   function isCompanyCheck(ev) {
     ev.preventDefault();
-    if (ev.checked === true) {
+    if (ev.target.checked === true) {
       companyInfoField.style.display = "block";
       return true;
     } else {
@@ -70,7 +71,7 @@ function validate() {
       input.value.length >= 5 &&
       input.value.length <= 15
     ) {
-      input.style.border = "none";
+      //input.style.border = "none";
       return true;
     } else {
       input.style.borderColor = "red";
@@ -91,6 +92,7 @@ function validate() {
       return true;
     } else {
       (fist.style.borderColor = "red"), (second.style.borderColor = "red");
+
       return false;
     }
   }
@@ -104,6 +106,17 @@ function validate() {
     }
     function checkIfEmailContainsNeededSymbols(input) {
       return /.*@.*\..*/.test(input.value);
+    }
+  }
+
+  function checkNumber(input) {
+    let number = Number(input.value);
+    if (number >= 1000 && number <= 9999) {
+      input.style.border = "none";
+      return true;
+    } else {
+      input.style.borderColor = "red";
+      return false;
     }
   }
 
